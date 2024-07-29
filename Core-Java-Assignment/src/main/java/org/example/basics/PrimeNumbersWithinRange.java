@@ -18,7 +18,7 @@ public class PrimeNumbersWithinRange {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int lower, upper;
-        int flag, i, j;
+        int i;
 
         System.out.println("Enter the lower bound value:");
         lower = sc.nextInt();

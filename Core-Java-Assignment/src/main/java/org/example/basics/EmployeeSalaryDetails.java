@@ -5,9 +5,9 @@ import java.util.*;
 public class EmployeeSalaryDetails {
     public static void main(String[] args) {
         int empno;
-        String name = "";
-        int monthlySalary = 0;
-        int yearlySalary = 0;
+        String name;
+        int monthlySalary;
+        int yearlySalary;
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter the empno:");

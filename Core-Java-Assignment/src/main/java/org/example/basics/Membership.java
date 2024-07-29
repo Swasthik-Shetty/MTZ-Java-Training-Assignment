@@ -15,7 +15,7 @@ public class Membership {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int age, mobileNum;
-        String name = "";
+        String name;
 
         System.out.println("Enter the name:");
         name = sc.nextLine();

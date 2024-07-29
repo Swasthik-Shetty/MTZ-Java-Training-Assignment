@@ -2,7 +2,6 @@ package org.example.basics;
 
 import java.util.Scanner;
 
-import static java.lang.Math.pow;
 
 public class CountPrimeDigits {
     static boolean isPrime(int num) {

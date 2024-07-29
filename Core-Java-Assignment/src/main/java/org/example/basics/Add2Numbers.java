@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Add2Numbers {
     public static void main(String[] args) {
         int num1, num2;
-        int sum = 0;
+        int sum;
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter the num1 value: ");

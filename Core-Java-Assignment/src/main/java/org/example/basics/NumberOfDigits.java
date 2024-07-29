@@ -2,7 +2,7 @@ package org.example.basics;
 
 import java.util.Scanner;
 
-import static java.lang.Math.pow;
+
 
 public class NumberOfDigits {
     public static void main(String[] args) {
