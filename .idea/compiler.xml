@@ -9,6 +9,7 @@
         <module name="QuizAssignment" />
         <module name="Core-Java-Assignment" />
         <module name="Core-Java-assignment" />
+        <module name="IPL-Stats-Assignment" />
       </profile>
     </annotationProcessing>
   </component>
