@@ -11,22 +11,17 @@ import org.modelmapper.ModelMapper;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
+public class IPLStatsServiceImpl implements IPLStatsService {
     List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
     List<PlayerDetails> playerDetails = JsonReaderUtil.loadJsonPlayerData();
-    List<TeamDTO> teamDTOList = new ArrayList<>();
-    List<PlayerDTO> playerDTOList = new ArrayList<>();
-    List<RoleCountDTO> roleCountDTOList = new ArrayList<>();
-    List<TeamAmountDTO> teamAmountDTOList = new ArrayList<>();
 
+    private final ModelMapper modelMapper = new ModelMapper();
 
 
     @Override
     public List<TeamDTO> getAllTeamDetails() {
 
-
-
-        teamDTOList = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .map(teamDetails -> {
                     TeamDTO teamDTO = new TeamDTO();
                     teamDTO.setCity(teamDetails.getCity());
@@ -37,10 +32,9 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                     return teamDTO;
                 })
                 .collect(Collectors.toList());
-        return teamDTOList;
+
     }
 
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public Map<String, List<PlayerDTO>> getMaxPaidPlayersByRole() {
@@ -66,7 +60,7 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
     public List<PlayerDTO> getPlayersByTeam(String role, String label) {
 
         List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
-        playerDTOList = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .filter(team -> team.getLabel().equals(label))
                 .flatMap(team -> team.getPlayers().stream())
                 .filter(player -> player.getRole().equals(role))
@@ -79,18 +73,13 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        return playerDTOList;
     }
 
     @Override
     public List<RoleCountDTO> getCountByRole(String label) {
 
 
-
-        List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
-
-
-        roleCountDTOList = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .filter(teamDetail -> teamDetail.getLabel().equals(label))
                 .flatMap(teamDetail -> teamDetail.getPlayers().stream())
                 .collect(Collectors.groupingBy(PlayerDetails::getRole, Collectors.counting()))
@@ -104,8 +93,6 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        return roleCountDTOList;
-
 
     }
 
@@ -114,7 +101,7 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
         List<PlayerDetails> playerDetailsList = JsonReaderUtil.loadJsonPlayerData();
 
 
-        playerDTOList = playerDetailsList.stream()
+        List<PlayerDTO> playerDTOList = playerDetailsList.stream()
                 .map(player -> {
                     PlayerDTO playerDTO = new PlayerDTO();
                     playerDTO.setName(player.getName());
@@ -124,27 +111,17 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        switch (fieldName) {
-            case "role":
-                playerDTOList.sort(Comparator.comparing(PlayerDTO::getRole));
-                break;
-            case "price":
-                playerDTOList.sort(Comparator.comparingLong(PlayerDTO::getPrize));
-                break;
-            case "name":
-                playerDTOList.sort(Comparator.comparing(PlayerDTO::getName));
-                break;
-            default:
-                break;
-
-        }
-        return playerDTOList;
+        return switch (fieldName) {
+            case "role" -> playerDTOList.stream().sorted(Comparator.comparing(PlayerDTO::getRole)).toList();
+            case "price" -> playerDTOList.stream().sorted(Comparator.comparingLong(PlayerDTO::getPrize)).toList();
+            case "name" -> playerDTOList.stream().sorted(Comparator.comparing(PlayerDTO::getName)).toList();
+            default -> playerDTOList;
+        };
     }
 
     @Override
     public void getTeamAmountByRole(String label, String role) {
 
-        List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
 
         System.out.println("Amount spent on " + role + " role by team " + label + " is: " +
                 teamDetailsList.stream()
@@ -158,10 +135,7 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
     @Override
     public List<TeamAmountDTO> getTotalAmountSpentByTeam() {
 
-
-        List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
-
-        teamAmountDTOList = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .map(team -> {
                     TeamAmountDTO dto = new TeamAmountDTO();
                     dto.setLabel(team.getLabel());
@@ -170,16 +144,14 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        return teamAmountDTOList;
     }
 
     @Override
     public List<String> getTeamLabels() {
         List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
-        List<String> labels = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .map(TeamDetails::getLabel)
                 .collect(Collectors.toList());
-        return labels;
     }
 
     @Override
@@ -187,7 +159,7 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
 
 
         List<TeamDetails> teamDetailsList = JsonReaderUtil.loadJsonTeamData();
-        playerDTOList = teamDetailsList.stream()
+        return teamDetailsList.stream()
                 .filter(team -> team.getLabel().equals(label))
                 .flatMap(team -> team.getPlayers().stream())
                 .map(player -> {
@@ -199,7 +171,7 @@ public class AllTeamDetailsServiceImpl implements AllTeamDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        return playerDTOList;
+
     }
 
 }

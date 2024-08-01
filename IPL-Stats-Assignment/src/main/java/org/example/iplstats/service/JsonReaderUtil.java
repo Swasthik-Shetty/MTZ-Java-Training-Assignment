@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public final class JsonReaderUtil {
     private JsonReaderUtil() {
 
     }
+
     public static List<TeamDetails> loadJsonTeamData() {
         ObjectMapper objectMapper = new ObjectMapper();
         List<TeamDetails> teamDetailsList = new ArrayList<>();
@@ -25,32 +28,29 @@ public final class JsonReaderUtil {
             assert inputStream != null;
             JsonNode node = objectMapper.readTree(inputStream);
 
-            for(int i = 0 ; i< node.size();i++)
-            {  TeamDetails teamDetails = new TeamDetails();
-                teamDetails.setCity(node.get(i).get("city").asText());
-                teamDetails.setCoach(node.get(i).get("coach").asText());
-                teamDetails.setHome(node.get(i).get("home").asText());
-                teamDetails.setName(node.get(i).get("name").asText());
-                teamDetails.setLabel(node.get(i).get("label").asText());
+            teamDetailsList = StreamSupport.stream(node.spliterator(), false)
+                                .map(teamNode -> {
+                                    TeamDetails teamDetails = new TeamDetails();
+                                    teamDetails.setCoach(teamNode.get("coach").asText());
+                                    teamDetails.setCity(teamNode.get("city").asText());
+                                    teamDetails.setLabel(teamNode.get("label").asText());
+                                    teamDetails.setName(teamNode.get("name").asText());
+                                    teamDetails.setHome(teamNode.get("home").asText());
 
+                                    List<PlayerDetails> playerDetails = StreamSupport.stream(teamNode.get("players").spliterator(), false)
+                                            .map(player -> {
+                                                PlayerDetails playerDetail = new PlayerDetails();
+                                                playerDetail.setRole(player.get("role").asText());
+                                                playerDetail.setName(player.get("name").asText());
+                                                playerDetail.setPrize(player.get("price").asLong());
+                                                return playerDetail;
+                                            })
+                                            .collect(Collectors.toList());
 
-                List<PlayerDetails> playerDetailsList = new ArrayList<>();
-                for(int j=0;j<node.get(i).get("players").size();j++) {
-                    PlayerDetails playerDetails = new PlayerDetails();
-                    playerDetails.setName(node.get(i).get("players").get(j).get("name").asText());
-                    playerDetails.setRole(node.get(i).get("players").get(j).get("role").asText());
-                    playerDetails.setPrize(node.get(i).get("players").get(j).get("price").asLong());
-                    playerDetailsList.add(playerDetails);
-                }
-
-
-                teamDetails.setPlayers(playerDetailsList);
-                teamDetailsList.add(teamDetails);
-
-            }
-
-
-
+                                    teamDetails.setPlayers(playerDetails);
+                                    return teamDetails;
+                                })
+                                .collect(Collectors.toList());
 
 
         } catch (IOException e) {
@@ -72,10 +72,9 @@ public final class JsonReaderUtil {
             assert inputStream != null;
             JsonNode node = objectMapper.readTree(inputStream);
 
-            for(int i = 0 ; i< node.size();i++)
-            {  TeamDetails teamDetails = new TeamDetails();
+            for (int i = 0; i < node.size(); i++) {
 
-                for(int j=0;j<node.get(i).get("players").size();j++) {
+                for (int j = 0; j < node.get(i).get("players").size(); j++) {
                     PlayerDetails playerDetails = new PlayerDetails();
                     playerDetails.setName(node.get(i).get("players").get(j).get("name").asText());
                     playerDetails.setRole(node.get(i).get("players").get(j).get("role").asText());
@@ -84,9 +83,6 @@ public final class JsonReaderUtil {
                 }
 
             }
-
-
-
 
 
         } catch (IOException e) {

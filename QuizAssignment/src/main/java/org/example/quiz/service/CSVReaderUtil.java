@@ -34,6 +34,7 @@ public final class CSVReaderUtil {
                     }
                     String answerLine = reader.readLine();
                     int answer = Integer.parseInt(answerLine.split(":")[1]);
+
                     Question question = new Question();
                     question.setId(questionNumber++);
                     question.setQuestionContent(questionText);

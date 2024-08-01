@@ -10,80 +10,91 @@ import org.example.iplstats.service.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-//        Question 1
-        TeamLabelsServiceImpl teamLabelsService =  new TeamLabelsServiceImpl();
-        List<String> labels = teamLabelsService.getTeamLabels();
-        System.out.println("The team labels are:");
-        for(String label : labels) {
-            System.out.print(label + " ");
-        }
+        Scanner sc = new Scanner(System.in);
+        IPLStatsServiceImpl iplStatsService = new IPLStatsServiceImpl();
 
-////        //Question 2
-        TeamPlayersServiceImpl teamPlayersService = new TeamPlayersServiceImpl();
-        List<PlayerDTO> playerDTOList = teamPlayersService.getPlayersByTeam("MI");
+//        Question 1
+
+        List<String> labels = iplStatsService.getTeamLabels();
+        System.out.println("The team labels are:");
+        labels.forEach(label -> System.out.print(label + " "));
+        System.out.println();
+
+        //Question 2
+        System.out.println("Enter the label of team to display team players:");
+        String label = sc.nextLine();
+
+        List<PlayerDTO> playerDTOList = iplStatsService.getPlayersByTeam(label);
         System.out.println("The team players are:");
-        for(PlayerDTO player : playerDTOList) {
-            System.out.println("Name : " + player.getName() + " Role: " + player.getRole());
-        }
-//
+        playerDTOList.forEach(player -> System.out.println("Name : " + player.getName() + " Role: " + player.getRole()));
+
+        System.out.println();
+
 //        Question 3
 
-        RoleCountServiceImpl roleCountService = new RoleCountServiceImpl();
-        List<RoleCountDTO> roleCountDTOS = roleCountService.getCountByRole("MI");
-        for(RoleCountDTO roleCountDTO : roleCountDTOS)
-        {
-            System.out.println(roleCountDTO.getRoleName()+":"+roleCountDTO.getCount());
+        System.out.println("Enter the label of team to display count Of role:");
+        String labelRole = sc.nextLine();
+        List<RoleCountDTO> roleCountDTOS = iplStatsService.getCountByRole(labelRole);
+        roleCountDTOS.forEach(roleCountDTO -> System.out.println(roleCountDTO.getRoleName() + ":" + roleCountDTO.getCount()));
+        System.out.println();
+
+        // Question 4
+        System.out.println("Enter the label of team and role of players to be displayed:");
+        System.out.println("Enter the label of team:");
+        String label2 = sc.nextLine();
+        System.out.println("Enter the role of players:");
+        String Role = sc.nextLine();
+        List<PlayerDTO> playerDTOS = iplStatsService.getPlayersByTeam(Role, label2);
+        playerDTOS.forEach(player -> System.out.println("Name : " + player.getName() + " Price: " + player.getPrize()));
+        System.out.println();
+
+        //Question 5
+        System.out.println("Displaying all team details:");
+        List<TeamDTO> teamDTOS = iplStatsService.getAllTeamDetails();
+        teamDTOS.forEach(team -> System.out.println("Name : " + team.getName() + " Label: " + team.getLabel() + " Coach: " + team.getCoach() + " City : " + team.getCity() + "Home:" + team.getHome()));
+        System.out.println();
+
+        //Question 6
+
+        System.out.println("Total amount spent by team:");
+        List<TeamAmountDTO> teamAmountDTOS = iplStatsService.getTotalAmountSpentByTeam();
+        teamAmountDTOS.forEach(team -> System.out.println("Team Label : " + team.getLabel() + " Total amount spent ; " + team.getAmount()));
+        System.out.println();
+
+        //Question 7
+        System.out.println("Enter the role of player and label of team to display total amount spent:");
+        System.out.println("Enter the role of player:");
+        String roleAmount = sc.nextLine();
+        System.out.println("Enter the label of team:");
+        String labelAmount = sc.nextLine();
+        iplStatsService.getTeamAmountByRole(labelAmount, roleAmount);
+        System.out.println();
+
+        //Question 8
+        System.out.println("Enter the field name of player details to be sorted :");
+        String fieldName = sc.next();
+
+        List<PlayerDTO> playerDTOS1 = iplStatsService.getPlayersBySort(fieldName);
+        for (PlayerDTO player : playerDTOS1) {
+            System.out.println("Name : " + player.getName() + " Role :" + player.getRole() + " Price: " + player.getPrize());
         }
-//       // Question 4
-            PlayerDetailsByRoleAndTeamServiceImpl playerDetailsByRoleAndTeam = new PlayerDetailsByRoleAndTeamServiceImpl();
-            List<PlayerDTO> playerDTOS = playerDetailsByRoleAndTeam.getPlayersByTeam("Batsman","MI");
-            for(PlayerDTO player : playerDTOS) {
-             System.out.println("Name : " + player.getName() + " Prize: " + player.getPrize());
-            }
-
-            //Question 5
-            AllTeamDetailsServiceImpl allTeamDetailsService = new AllTeamDetailsServiceImpl();
-            List<TeamDTO> teamDTOS = allTeamDetailsService.getAllTeamDetails();
-            for(TeamDTO team : teamDTOS)
-            {
-                System.out.println("Name : " + team.getName() + " Label: " + team.getLabel() + " Coach: " + team.getCoach() + "City : " + team.getCity() + "Home:"+team.getHome());
-            }
-
-            //Question 6
-            TeamAmountServiceImpl teamAmountService = new TeamAmountServiceImpl();
-            List<TeamAmountDTO> teamAmountDTOS = teamAmountService.getTotalAmountSpentByTeam();
-            for(TeamAmountDTO team : teamAmountDTOS) {
-                System.out.println("Team Label : "+team.getLabel() + " Total amount spent ; " + team.getAmount());
-            }
-
-            //Question 7
-            TeamAmountByRoleServiceImpl teamAmountByRoleService = new TeamAmountByRoleServiceImpl();
-            teamAmountByRoleService.getTeamAmountByRole("MI","Batsman");
-
-            //Question 8
-            SortPlayerDetailsserviceImpl sortPlayerDetailsservice = new SortPlayerDetailsserviceImpl();
-            List<PlayerDTO> playerDTOS1 = sortPlayerDetailsservice.getPlayersBySort("name");
-            for(PlayerDTO player : playerDTOS1)
-            {
-                System.out.println("Name : " + player.getName() +" Role :" + player.getRole() + " Price: " + player.getPrize());
-            }
+        System.out.println();
 
         //Question 9
-          MaxPaidPlayerByRoleServiceImpl maxPaidPlayerByRoleService = new MaxPaidPlayerByRoleServiceImpl();
-          Map<String,List<PlayerDTO>> maxPaidPlayerByRole = maxPaidPlayerByRoleService.getMaxPaidPlayersByRole();
 
-        for (Map.Entry<String, List<PlayerDTO>> entry : maxPaidPlayerByRole.entrySet()) {
-            String role = entry.getKey();
-            List<PlayerDTO> players = entry.getValue();
-            System.out.println("Role: " + role);
-            for (PlayerDTO player : players) {
-                System.out.println("  Name: " + player.getName() + ", Price: " + player.getPrize());
-            }
-        }
+        Map<String, List<PlayerDTO>> maxPaidPlayerByRole = iplStatsService.getMaxPaidPlayersByRole();
+        System.out.println("Maximum Paid Player by role: ");
+        maxPaidPlayerByRole.entrySet().stream()
+                .forEach(entry -> {
+                    System.out.print("Role: " + entry.getKey());
+                    entry.getValue()
+                            .forEach(player -> System.out.println(" Name: " + player.getName() + ", Price: " + player.getPrize()));
+                });
 
     }
 }

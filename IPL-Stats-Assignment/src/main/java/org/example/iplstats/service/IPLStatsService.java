@@ -8,7 +8,7 @@ import org.example.iplstats.dto.TeamDTO;
 import java.util.List;
 import java.util.Map;
 
-public interface AllTeamDetailsService {
+public interface IPLStatsService {
     public List<TeamDTO> getAllTeamDetails();
     public Map<String, List<PlayerDTO>> getMaxPaidPlayersByRole();
     public List<PlayerDTO> getPlayersByTeam(String role, String label);
