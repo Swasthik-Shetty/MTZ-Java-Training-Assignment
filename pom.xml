@@ -14,6 +14,7 @@
         <module>Core-Java-assignment</module>
         <module>Core-Java-Assignment</module>
         <module>IPL-Stats-Assignment</module>
+        <module>Student-Details</module>
     </modules>
     <description>Project with all the modules</description>
 

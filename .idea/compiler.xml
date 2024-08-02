@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Student-Details" />
         <module name="QuizAssignment" />
         <module name="Core-Java-Assignment" />
         <module name="Core-Java-assignment" />
