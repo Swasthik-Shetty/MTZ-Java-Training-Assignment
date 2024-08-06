@@ -15,6 +15,7 @@
         <module>Core-Java-Assignment</module>
         <module>IPL-Stats-Assignment</module>
         <module>Student-Details</module>
+        <module>Emp-Details</module>
     </modules>
     <description>Project with all the modules</description>
 
@@ -34,6 +35,11 @@
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
                 <version>3.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>5.9</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
