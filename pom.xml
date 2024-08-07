@@ -16,6 +16,8 @@
         <module>IPL-Stats-Assignment</module>
         <module>Student-Details</module>
         <module>Emp-Details</module>
+        <module>Emp-Dept-Details</module>
+        <module>IPL-Stats-JDBC</module>
     </modules>
     <description>Project with all the modules</description>
 

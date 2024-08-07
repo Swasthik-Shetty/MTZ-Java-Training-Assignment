@@ -1,0 +1,22 @@
+[
+    {
+        "deptno": "10",
+        "dname": "ACCOUNTING",
+        "location": "NEW YORK"
+    },
+    {
+        "deptno": "20",
+        "dname": "RESEARCH",
+        "location": "DALLAS"
+    },
+    {
+        "deptno": "30",
+        "dname": "SALES",
+        "location": "CHICAGO"
+    },
+    {
+        "deptno": "40",
+        "dname": "OPERATIONS",
+        "location": "BOSTON"
+    }
+]

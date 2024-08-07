@@ -36,6 +36,7 @@ public class CourseStatServiceImpl implements CourseStatService {
     @Override
     public int getNotPlacedStudentCount() {
         return (int) studentList.stream()
+                .filter(student -> student.getCompleted().equals("Y"))
                 .filter(student -> student.getPlaced().equals("N"))
                 .count();
     }
@@ -44,7 +45,9 @@ public class CourseStatServiceImpl implements CourseStatService {
     public CountDTO getPlacedAndNotPlacedCount() {
         CountDTO countDTO = new CountDTO();
         int placedCount = getPlacedStudentCount();
-        int nonPlacedCount = getNotPlacedStudentCount();
+        int nonPlacedCount = (int) studentList.stream()
+                            .filter(student -> student.getPlaced().equals("N"))
+                            .count();
 
         countDTO.setPlacedCount(placedCount);
         countDTO.setNotPlacedCount(nonPlacedCount);

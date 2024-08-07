@@ -29,7 +29,7 @@ public class Main {
 
         //Question 3 and 4
         System.out.println("Count of placed students: " + courseStatService.getPlacedStudentCount());
-        System.out.println("Count of non-placed students: " + courseStatService.getNotPlacedStudentCount());
+        System.out.println("Count of non-placed students who have completed the course : " + courseStatService.getNotPlacedStudentCount());
         System.out.println();
 
 
