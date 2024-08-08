@@ -2,37 +2,48 @@ package org.example.iplstatsjdbc.service;
 
 import org.example.iplstatsjdbc.domain.Player;
 import org.example.iplstatsjdbc.domain.Team;
-import org.postgresql.Driver;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
+import java.util.Properties;
 
 public class ConnectionUtil {
 
-    private static final String url ="jdbc:postgresql://dpg-cqorlp2j1k6c73d7arjg-a.oregon-postgres.render.com:5432/mtz_pgsql_assignment";
-    private static final String user ="mtz_pgsql_assignment_user";
-    private static final String password = "QuchEQA1KZz32MKveO6L4CopPRHi4po1";
     private Connection conn=null;
 
 
     public Connection connection(){
         try {
-            conn = DriverManager.getConnection(url,user,password);
+            Properties prop = new Properties();
+            String propFileName = "db.properties";
 
+            InputStream file = ConnectionUtil.class.getClassLoader().getResourceAsStream(propFileName);
+            prop.load(file);
+            file.close();
+
+            String url = prop.getProperty("db.url");
+            String user = prop.getProperty("db.user");
+            String password = prop.getProperty("db.password");
+
+            conn = DriverManager.getConnection(url,user,password);
         }
-        catch (SQLException e) {
+        catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return conn;
     }
+
     public void dbSetup() {
         try  {
             conn=connection();
             Statement stmt = conn.createStatement();
-            // Check if the 'teams' table exists
-            if (!tableExists(conn, "teams")) {
+
+
                 // Create tables
-                String createTeamsTable = "CREATE TABLE teams (" +
+                String createTeamsTable = "CREATE TABLE IF NOT EXISTS teams  (" +
                         "id SERIAL PRIMARY KEY," +
                         "name VARCHAR(255) UNIQUE," +
                         "city VARCHAR(255)," +
@@ -42,7 +53,7 @@ public class ConnectionUtil {
                         ")";
                 stmt.executeUpdate(createTeamsTable);
 
-                String createPlayersTable = "CREATE TABLE players (" +
+                String createPlayersTable = "CREATE TABLE IF NOT EXISTS players (" +
                         "id SERIAL PRIMARY KEY," +
                         "team_name VARCHAR(255)," +
                         "name VARCHAR(255)," +
@@ -52,29 +63,27 @@ public class ConnectionUtil {
                         ")";
                 stmt.executeUpdate(createPlayersTable);
 
-                System.out.println("Tables created successfully.");
-            } else {
-                System.out.println("Tables already exist.");
-            }
+                System.out.println("Tables created successfully!!");
+                stmt.close();
+            closeConn();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    private boolean tableExists(Connection conn, String tableName) throws SQLException {
-        DatabaseMetaData meta = conn.getMetaData();
-        try (ResultSet rs = meta.getTables(null, null, tableName, null)) {
-            return rs.next();
-        }
-    }
 
-    public void insertData(List<Team> teams) {
+
+    public void insertData() {
         try  {
             conn=connection();
             Statement stmt = conn.createStatement();
+
+            List<Team> teamList = JsonReaderUtil.readTeams();
+
             if (isTableEmpty(conn, "teams")) {
-                String teamSql = "INSERT INTO teams (home, label, name, coach, city) VALUES (?, ?, ?, ?, ?) ON CONFLICT (name) DO NOTHING";
+                String teamSql = "INSERT INTO teams (home, label, name, coach, city) VALUES (?, ?, ?, ?, ?)";
                 try (PreparedStatement teamStmt = conn.prepareStatement(teamSql)) {
-                    for (Team team : teams) {
+                    for (Team team : teamList) {
                         teamStmt.setString(1, team.getHome());
                         teamStmt.setString(2, team.getLabel());
                         teamStmt.setString(3, team.getName());
@@ -87,9 +96,9 @@ public class ConnectionUtil {
             }
 
             if (isTableEmpty(conn, "players")) {
-                String playerSql = "INSERT INTO players (team_name, role, name, price) VALUES (?, ?, ?, ?) ON CONFLICT (team_name, name) DO NOTHING";
+                String playerSql = "INSERT INTO players (team_name, role, name, price) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement playerStmt = conn.prepareStatement(playerSql)) {
-                    for (Team team : teams) {
+                    for (Team team : teamList) {
                         for (Player player : team.getPlayers()) {
                             playerStmt.setString(1, team.getName());
                             playerStmt.setString(2, player.getRole());
@@ -101,11 +110,14 @@ public class ConnectionUtil {
                     playerStmt.executeBatch();
                 }
             }
+            closeConn();
+            System.out.println("Teams and Players Table Details entered successfully!!");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     private boolean isTableEmpty(Connection connection, String tableName) throws SQLException {
         String query = "SELECT COUNT(*) FROM " + tableName;
         try (PreparedStatement stmt = connection.prepareStatement(query);
@@ -116,9 +128,11 @@ public class ConnectionUtil {
         }
         return false;
     }
+
     public void closeConn(){
         try {
             conn.close();
+
         }
         catch (Exception e){
             System.out.println(e);

@@ -15,6 +15,7 @@
         <module name="Emp-Dept-Details" />
         <module name="Core-Java-assignment" />
         <module name="IPL-Stats-Assignment" />
+        <module name="Contact" />
       </profile>
     </annotationProcessing>
   </component>

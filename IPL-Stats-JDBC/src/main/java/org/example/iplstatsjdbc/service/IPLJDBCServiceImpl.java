@@ -1,14 +1,13 @@
 package org.example.iplstatsjdbc.service;
 
-import org.example.iplstatsjdbc.domain.Team;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 public class IPLJDBCServiceImpl implements IPLJDBCService {
-    List<Team> teamDetails = JsonReaderUtil.readTeams();
+
     ConnectionUtil util = new ConnectionUtil();
     Connection connection = util.connection();
 
@@ -18,7 +17,9 @@ public class IPLJDBCServiceImpl implements IPLJDBCService {
         String sql = "SELECT * FROM teams";
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") + ", City: " + rs.getString("city") + ", Coach: " + rs.getString("coach") + ", Home: " + rs.getString("home") + ", Label: " + rs.getString("label"));
+                System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") +
+                        ", City: " + rs.getString("city") + ", Coach: " + rs.getString("coach") +
+                        ", Home: " + rs.getString("home") + ", Label: " + rs.getString("label"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -33,7 +34,7 @@ public class IPLJDBCServiceImpl implements IPLJDBCService {
             while (rs.next()) {
                 String role = rs.getString("role");
                 String playerName = rs.getString("name");
-                roleToPlayerMap.put(role, playerName + " ($" + rs.getDouble("max_price") + ")");
+                roleToPlayerMap.put(role, playerName);
             }
             for (Map.Entry<String, String> entry : roleToPlayerMap.entrySet()) {
                 System.out.println("Role: " + entry.getKey() + ", Max Paid Player: " + entry.getValue());
@@ -80,7 +81,8 @@ public class IPLJDBCServiceImpl implements IPLJDBCService {
         String sql = "SELECT * FROM players ORDER BY " + fieldName;
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                System.out.println("Team Name: " + rs.getString("team_name") + ", Name: " + rs.getString("name") + ", Price: " + rs.getDouble("price") + ", Role: " + rs.getString("role"));
+                System.out.println("Team Name: " + rs.getString("team_name") + ", Name: " + rs.getString("name") +
+                        ", Price: " + rs.getDouble("price") + ", Role: " + rs.getString("role"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +91,8 @@ public class IPLJDBCServiceImpl implements IPLJDBCService {
 
     @Override
     public void getTeamAmountByRole(String label, String role) {
-        String sql = "SELECT team_name, SUM(price) AS total_amount FROM players WHERE team_name IN (SELECT name FROM teams WHERE label = ?) AND role = ? GROUP BY team_name";
+        String sql = "SELECT team_name, SUM(price) AS total_amount FROM players WHERE team_name IN (SELECT name FROM teams WHERE label = ?)" +
+                     " AND role = ? GROUP BY team_name";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, label);
             stmt.setString(2, role);

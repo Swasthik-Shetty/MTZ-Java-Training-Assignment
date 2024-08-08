@@ -1,7 +1,5 @@
 package org.example.iplstatsjdbc.service;
 
-import java.util.List;
-import java.util.Map;
 
 public interface IPLJDBCService {
     void getAllTeamDetails();
