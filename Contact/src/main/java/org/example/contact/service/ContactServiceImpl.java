@@ -5,17 +5,15 @@ import org.apache.poi.ss.usermodel.Row;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.contact.dto.ContactDTO;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,16 +21,17 @@ public class ContactServiceImpl implements ContactService{
 
     @Override
     public void create(Connection conn, ContactDTO contactDTO) {
-        String teamSql = "INSERT INTO contactbook (cname,email,dob,mobile) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement teamStmt = conn.prepareStatement(teamSql)) {
+        String sql = "INSERT INTO contactbook (cname,email,dob,mobile) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement Stmt = conn.prepareStatement(sql)) {
 
-                teamStmt.setString(1, contactDTO.getName());
-                teamStmt.setString(2, contactDTO.getEmail());
-            teamStmt.setDate(3, Date.valueOf(contactDTO.getDob())); // Ensure dob is in the format YYYY-MM-DD
-            teamStmt.setLong(4, Long.parseLong(contactDTO.getMobile()));
+                Stmt.setString(1, contactDTO.getName());
+                Stmt.setString(2, contactDTO.getEmail());
+            Stmt.setDate(3, Date.valueOf(contactDTO.getDob())); // Ensure dob is in the format YYYY-MM-DD
+            Stmt.setLong(4, Long.parseLong(contactDTO.getMobile()));
 
-            teamStmt.addBatch();
-                teamStmt.executeBatch();
+            Stmt.addBatch();
+            Stmt.executeBatch();
+            Stmt.close();
             System.out.println("Entered successfully");
         }catch (SQLException e)
         {
@@ -41,23 +40,63 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public ContactDTO update(Connection conn, PreparedStatement stmt, ContactDTO contactDTO) {
-        return null;
+    public void update(Connection conn, ContactDTO contactDTO) {
+        String sql = "UPDATE contacts SET cname = ?, email = ?, dob = ?, mobile = ? WHERE id = ?";
+        try (PreparedStatement Stmt = conn.prepareStatement(sql)) {
+
+            Stmt.setString(1, contactDTO.getName());
+            Stmt.setString(2, contactDTO.getEmail());
+            Stmt.setDate(3, Date.valueOf(contactDTO.getDob())); // Ensure dob is in the format YYYY-MM-DD
+            Stmt.setLong(4, Long.parseLong(contactDTO.getMobile()));
+            Stmt.setInt(5,contactDTO.getId());
+
+            Stmt.addBatch();
+            Stmt.executeBatch();
+            Stmt.close();
+            System.out.println("Updated successfully");
+        }catch (SQLException e)
+        {
+            System.out.println();
+        }
     }
 
     @Override
-    public List<ContactDTO> search(Connection conn,PreparedStatement stmt, ContactDTO contactDTO) {
+    public List<ContactDTO> search(Connection conn, ContactDTO contactDTO) {
         return List.of();
     }
 
     @Override
-    public boolean delete(Connection conn, PreparedStatement stmt, ContactDTO contactDTO) {
+    public boolean delete(Connection conn,  ContactDTO contactDTO) {
         return false;
     }
 
     @Override
-    public ContactDTO getById(Connection conn, PreparedStatement stmt, ContactDTO contactDTO) {
-        return null;
+    public ContactDTO getById(Connection conn, int id) {
+        ContactDTO contactDTO = new ContactDTO();
+        String query = "SELECT * FROM contactbook where id= ?";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1,id);
+            ResultSet resultSet = stmt.executeQuery();
+            if(resultSet.next()) {
+                String name = resultSet.getString("cname");
+                contactDTO.setId(id);
+                contactDTO.setName(name);
+                contactDTO.setEmail(resultSet.getString("email"));
+                Date dbBirthDate = resultSet.getDate("dob");
+                if (dbBirthDate != null) {
+                    LocalDate localBirthDate = dbBirthDate.toLocalDate();
+                    contactDTO.setDob(localBirthDate.toString());
+                }
+                contactDTO.setMobile(resultSet.getString("mobile"));
+            }
+            resultSet.close();
+            stmt.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return contactDTO;
     }
 
     @Override
@@ -124,7 +163,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public boolean exportExcel(Connection conn,PreparedStatement stmt, ContactDTO contactDTO) {
-        return false;
+    public void exportExcel(Connection conn, ContactDTO contactDTO) {
+
     }
 }

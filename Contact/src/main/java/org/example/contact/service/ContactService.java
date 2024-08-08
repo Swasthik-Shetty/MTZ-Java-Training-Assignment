@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface ContactService {
     public void create(Connection conn, ContactDTO contactDTO);
-    public ContactDTO update(Connection conn, PreparedStatement stmt,ContactDTO contactDTO);
-    public List<ContactDTO> search(Connection conn, PreparedStatement stmt,ContactDTO contactDTO);
-    public boolean delete(Connection conn, PreparedStatement stmt,ContactDTO contactDTO);
-    public ContactDTO getById(Connection conn, PreparedStatement stmt,ContactDTO contactDTO);
+    public void update(Connection conn,ContactDTO contactDTO);
+    public List<ContactDTO> search(Connection conn,ContactDTO contactDTO);
+    public boolean delete(Connection conn,ContactDTO contactDTO);
+    public ContactDTO getById(Connection conn, int id);
     public void importExcel(Connection conn);
-    public boolean exportExcel(Connection conn, PreparedStatement stmt,ContactDTO contactDTO);
+    public void exportExcel(Connection conn, ContactDTO contactDTO);
 }
