@@ -47,7 +47,7 @@ public class Main {
         int id = sc.nextInt();
         contactDTO = contactService.getById(connection,id);
         System.out.println("Name: " + contactDTO.getName() +" Email: "+ contactDTO.getEmail() +
-                            "DOB: " + contactDTO.getDob() + "Mobile: "+ contactDTO.getMobile());
+                "DOB: " + contactDTO.getDob() + "Mobile: "+ contactDTO.getMobile());
 
 
         ConnectionUtil.closeStatement(stmt);
