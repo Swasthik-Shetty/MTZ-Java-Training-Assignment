@@ -19,6 +19,7 @@
         <module>Emp-Dept-Details</module>
         <module>IPL-Stats-JDBC</module>
         <module>Contact</module>
+        <module>PDF-Generation</module>
     </modules>
     <description>Project with all the modules</description>
 

@@ -1,16 +1,25 @@
 package com.example.pdfgen.service;
 
-@Service
-public class PdfGenerationService {
-    public void createPdf() throws IOException, FOPException {
-        File xmlFile = new File("src/main/resources/input.xml");
-        File xsltFile = new File("src/main/resources/stylesheet.xsl");
-        File pdfFile = new File("src/main/resources/output.pdf");
+
+import org.apache.fop.apps.*;
+
+import javax.xml.transform.*;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+
+public class PdfGenerationServiceImpl implements PdfGenerationService {
+    @Override
+    public void createPdf() {
+        try  {
+        InputStream xmlFile = PdfGenerationServiceImpl.class.getClassLoader().getResourceAsStream("input.xml");
+        InputStream xsltFile = PdfGenerationServiceImpl.class.getClassLoader().getResourceAsStream("stylesheet.xsl");
 
         FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 
-        try (OutputStream out = new FileOutputStream(pdfFile)) {
+
+            OutputStream out = new FileOutputStream("PDF-Generation\\src\\main\\resources\\output.pdf");
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
 
             TransformerFactory factory = TransformerFactory.newInstance();
@@ -20,7 +29,8 @@ public class PdfGenerationService {
             Result res = new SAXResult(fop.getDefaultHandler());
 
             transformer.transform(src, res);
-        } catch (TransformerException e) {
+        } catch (TransformerException | IOException | FOPException e) {
+            System.err.println("Error generating PDF: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
