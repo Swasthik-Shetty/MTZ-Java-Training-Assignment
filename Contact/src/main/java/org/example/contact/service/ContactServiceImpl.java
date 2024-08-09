@@ -26,7 +26,7 @@ public class ContactServiceImpl implements ContactService{
 
                 Stmt.setString(1, contactDTO.getName());
                 Stmt.setString(2, contactDTO.getEmail());
-            Stmt.setDate(3, Date.valueOf(contactDTO.getDob())); // Ensure dob is in the format YYYY-MM-DD
+            Stmt.setDate(3, Date.valueOf(contactDTO.getDob()))
             Stmt.setLong(4, Long.parseLong(contactDTO.getMobile()));
 
             Stmt.addBatch();
