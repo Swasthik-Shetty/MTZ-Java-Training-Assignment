@@ -12,7 +12,7 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
 
-        Connection conn=null;
+        Connection conn = null;
         try {
             Properties prop = new Properties();
             String propFileName = "db.properties";
@@ -25,10 +25,9 @@ public class ConnectionUtil {
             String user = prop.getProperty("db.user");
             String password = prop.getProperty("db.password");
 
-            conn = DriverManager.getConnection(url,user,password);
+            conn = DriverManager.getConnection(url, user, password);
 
-        }
-        catch (SQLException | IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return conn;
@@ -38,28 +37,27 @@ public class ConnectionUtil {
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return stmt;
     }
 
-    public static void closeStatement(Statement stmt){
+    public static void closeStatement(Statement stmt) {
         try {
             stmt.close();
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println();
         }
     }
-    public static void closeConn(Connection conn){
+
+    public static void closeConn(Connection conn) {
         try {
             conn.close();
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println();
         }
     }

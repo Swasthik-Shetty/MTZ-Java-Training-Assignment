@@ -11,5 +11,5 @@ public class Contact {
     private String name;
     private String email;
     private String dob;
-    private int mobile;
+    private String mobile;
 }
