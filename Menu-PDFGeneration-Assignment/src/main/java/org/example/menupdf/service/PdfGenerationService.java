@@ -12,7 +12,7 @@ import java.io.*;
 public class PdfGenerationService {
     public void createPdf() {
         try {
-            InputStream xmlFile = PdfGenerationService.class.getClassLoader().getResourceAsStream("order.xml");
+            InputStream xmlFile = new FileInputStream("Menu-PDFGeneration-Assignment/src/main/resources/order.xml");
             InputStream xsltFile = PdfGenerationService.class.getClassLoader().getResourceAsStream("stylesheet.xsl");
 
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
