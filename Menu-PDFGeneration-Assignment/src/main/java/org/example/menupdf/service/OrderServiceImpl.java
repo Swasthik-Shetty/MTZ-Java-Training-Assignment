@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
 
-    public List<OrderDTO> processOrder() {
+    public List<OrderDTO> processOrder(Menu menu) {
 
-        Menu menu = JsonReaderUtil.readTeams();
+
         Scanner scanner = new Scanner(System.in);
         List<OrderDTO> orders = new ArrayList<>();
 
@@ -61,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderDTO::getTotalPrice)
                 .reduce(0.0f, Float::sum);
         orderInfoDTO.setCompleteTotal(totalAmt);
+        orderInfoDTO.setTotalWithGST((float) (totalAmt*0.05));
         return orderInfoDTO;
     }
 
