@@ -18,4 +18,5 @@ public class OrderInfoDTO {
     private List<OrderDTO> orderDTOList;
 
     private float completeTotal;
+    private float totalWithGST;
 }
