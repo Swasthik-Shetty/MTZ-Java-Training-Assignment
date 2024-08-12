@@ -168,76 +168,62 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void importExcel(Connection conn) {
+    public boolean importExcel(Connection conn) {
         try {
             InputStream file = ContactServiceImpl.class.getClassLoader().getResourceAsStream("contact.xlsx");
             assert file != null;
-            Workbook workbook = WorkbookFactory.create(file);
+            Workbook workbook = new XSSFWorkbook(file);
+                Sheet sheet = workbook.getSheetAt(0);
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) continue;
 
-            // Get first sheet from the workbook
-            Sheet sheet = workbook.getSheetAt(0);
+                    ContactDTO contactDTO = new ContactDTO();
 
-            // Assuming first row contains column names
-            Row headerRow = sheet.getRow(1);
-
-
-            // Create SQL INSERT statement based on column names
-            StringBuilder sql = new StringBuilder("INSERT INTO contactbook (");
-            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-                sql.append(headerRow.getCell(i).getStringCellValue());
-                if (i < headerRow.getLastCellNum() - 1) {
-                    sql.append(", ");
-                }
-            }
-            sql.append(") VALUES (");
-            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-                sql.append("?");
-                if (i < headerRow.getLastCellNum() - 1) {
-                    sql.append(", ");
-                }
-            }
-            sql.append(")");
-
-            // Iterate through rows and insert data
-            PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                Row row = sheet.getRow(i);
-                for (int j = 0; j < row.getLastCellNum(); j++) {
-                    Cell cell = row.getCell(j);
-                    if (cell != null) {
-                        switch (cell.getCellType()) {
-                            case STRING:
-                                if (cell.getStringCellValue().matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                    java.util.Date date = sdf.parse(cell.getStringCellValue());
-                                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                                    pstmt.setDate(j + 1, sqlDate);
-                                } else {
-                                    pstmt.setString(j + 1, cell.getStringCellValue());
-                                }
-                                break;
-                            case NUMERIC:
-                                pstmt.setInt(j + 1, (int) cell.getNumericCellValue());
-                                break;
-
-                            default:
-                                pstmt.setString(j + 1, "");
-                        }
-                    } else {
-                        pstmt.setString(j + 1, "");
+                    if (row.getCell(0) != null && row.getCell(0).getCellType() == CellType.STRING) {
+                        contactDTO.setName(row.getCell(0).getStringCellValue());
+                    } else if (row.getCell(0) != null && row.getCell(0).getCellType() == CellType.NUMERIC) {
+                        contactDTO.setName(String.valueOf(row.getCell(0).getNumericCellValue()));
                     }
+
+                    if (row.getCell(1) != null && row.getCell(1).getCellType() == CellType.STRING) {
+                        contactDTO.setEmail(row.getCell(1).getStringCellValue());
+                    } else if (row.getCell(1) != null && row.getCell(1).getCellType() == CellType.NUMERIC) {
+                        contactDTO.setEmail(String.valueOf(row.getCell(1).getNumericCellValue()));
+                    }
+
+                    if (row.getCell(2) != null && row.getCell(2).getCellType() == CellType.NUMERIC) {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        contactDTO.setDob(dateFormat.format(row.getCell(2).getDateCellValue()));
+                    }
+
+                    if (row.getCell(3) != null && row.getCell(3).getCellType() == CellType.STRING) {
+                        contactDTO.setMobile(row.getCell(3).getStringCellValue());
+                    } else if (row.getCell(3) != null && row.getCell(3).getCellType() == CellType.NUMERIC) {
+                        contactDTO.setMobile(String.valueOf(row.getCell(3).getNumericCellValue()));
+                    }
+
+                    String query = "INSERT INTO contactbook (cname, email, dob, mobile) VALUES (?, ?, ?, ?)";
+                    PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                        stmt.setString(1, contactDTO.getName());
+                        stmt.setString(2, contactDTO.getEmail());
+                        stmt.setDate(3, Date.valueOf(contactDTO.getDob()));
+                        stmt.setString(4, contactDTO.getMobile());
+                        stmt.executeUpdate();
+                        ResultSet generatedKeys = stmt.getGeneratedKeys();
+                            if (generatedKeys.next()) {
+
+                                contactDTO.setId(generatedKeys.getInt(1));
+                            }
+
+
+
                 }
-                pstmt.addBatch();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
             }
-            pstmt.executeBatch();
-            conn.close();
-            workbook.close();
-            file.close();
+            return true;
 
-
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
     }
 
     @Override

@@ -8,8 +8,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="IPL-Stats-JDBC" />
+        <module name="Menu-PDFGeneration-Assignment" />
         <module name="QuizAssignment" />
         <module name="Student-Details" />
+        <module name="Liquibase_practice" />
         <module name="Core-Java-Assignment" />
         <module name="Emp-Dept-Details" />
         <module name="Emp-Details" />

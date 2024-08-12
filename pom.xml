@@ -20,6 +20,8 @@
         <module>IPL-Stats-JDBC</module>
         <module>Contact</module>
         <module>PDF-Generation</module>
+        <module>Liquibase_practice</module>
+        <module>Menu-PDFGeneration-Assignment</module>
     </modules>
     <description>Project with all the modules</description>
 

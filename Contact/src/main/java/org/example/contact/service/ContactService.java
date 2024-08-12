@@ -19,7 +19,7 @@ public interface ContactService {
 
     public ContactDTO getById(Connection conn, int id);
 
-    public void importExcel(Connection conn);
+    public boolean importExcel(Connection conn);
 
     public boolean exportExcel(Connection conn);
 }
