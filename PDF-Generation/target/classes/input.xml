@@ -1,13 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<books>
-    <book>
-        <title>Spring Boot in Action</title>
-        <author>Craig Walls</author>
-        <year>2022</year>
-    </book>
-    <book>
-        <title>Java: The Complete Reference</title>
-        <author>Herbert Schildt</author>
-        <year>2023</year>
-    </book>
-</books>
+<invoice>
+    <invoiceNumber>INV-01234</invoiceNumber>
+    <date>April 11, 2023</date>
+    <company>
+        <name>SALFORD and CO.</name>
+        <phone>+123-456-7890</phone>
+        <address>123 Anywhere St., Any City</address>
+    </company>
+    <billTo>
+        <name>Kimberly Nguyen</name>
+        <address>123 Anywhere St., Any City, ST 12345</address>
+    </billTo>
+    <items>
+        <item>
+            <description>Consulting Services</description>
+            <price>100</price>
+            <amount>500</amount>
+        </item>
+        <item>
+            <description>Website Development</description>
+            <price>5000</price>
+            <amount>5000</amount>
+        </item>
+        <item>
+            <description>Graphic Design Services</description>
+            <price>50</price>
+            <amount>250</amount>
+        </item>
+    </items>
+    <subTotal>6250</subTotal>
+    <salesTax>625</salesTax>
+    <total>6875</total>
+    <paymentInfo>
+        <bank>Borecelle Bank</bank>
+        <name>Margarita Perez</name>
+        <account>0123 4567 8901</account>
+    </paymentInfo>
+    <terms>Payment is due 30 days from the invoice date.</terms>
+</invoice>
