@@ -1,4 +1,3 @@
-
   {
     "menu": {
       "desserts": [
@@ -40,6 +39,26 @@
         },
         {
           "name": "Panna Cotta",
+          "price": 5.00
+        },
+        {
+          "name": "Lemon Meringue Pie",
+          "price": 5.50
+        },
+        {
+          "name": "Raspberry Sorbet",
+          "price": 4.75
+        },
+        {
+          "name": "Red Velvet Cake",
+          "price": 6.00
+        },
+        {
+          "name": "Mango Sticky Rice",
+          "price": 5.25
+        },
+        {
+          "name": "Peach Cobbler",
           "price": 5.00
         }
       ],
@@ -87,4 +106,3 @@
       ]
     }
   }
-

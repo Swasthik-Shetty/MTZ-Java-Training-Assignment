@@ -27,7 +27,7 @@ public class Main {
         List<Drinks> drinks = menu.getDrinks();
         System.out.println("---------------------------------Menu------------------------------------");
 
-        // Print Desserts section
+
         System.out.println("-------------------------------Desserts----------------------------------");
         System.out.printf("| %-3s | %-50s | %-10s |\n", "ID", "Name", "Price");
         System.out.println("-------------------------------------------------------------------------");
@@ -36,7 +36,7 @@ public class Main {
             System.out.printf("| %-3d | %-50s | %10.2f |\n", dessert.getId(), dname, dessert.getPrice());
         }
 
-        // Print Drinks section
+
         System.out.println("--------------------------------Drinks-----------------------------------");
         System.out.printf("| %-3s | %-50s | %-10s |\n", "ID", "Name", "Price");
         System.out.println("-------------------------------------------------------------------------");

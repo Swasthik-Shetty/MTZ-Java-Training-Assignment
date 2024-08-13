@@ -9,7 +9,7 @@ import org.example.menupdf.dto.OrderInfoDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+
 
 public class OrderServiceImpl implements OrderService {
 
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderDTO::getTotalPrice)
                 .reduce(0.0f, Float::sum);
         orderInfoDTO.setCompleteTotal(totalAmt);
-        orderInfoDTO.setTotalWithGST((float) (totalAmt*0.05));
+        orderInfoDTO.setTotalWithGST((float) (totalAmt+(totalAmt*0.05)));
         return orderInfoDTO;
     }
 
