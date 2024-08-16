@@ -19,7 +19,7 @@
                 Hotel Woodlands
             </fo:block>
             <fo:block font-size="18pt" font-weight="bold" text-align="center" space-after="20pt" font-family="Cursive" font-style ="italic" color="green">
-            Order Details
+                Order Details
             </fo:block>
         </fo:static-content>
 

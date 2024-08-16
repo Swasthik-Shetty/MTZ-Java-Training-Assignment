@@ -10,10 +10,9 @@
         <module name="IPL-Stats-JDBC" />
         <module name="Menu-PDFGeneration-Assignment" />
         <module name="QuizAssignment" />
+        <module name="JUnit5-Practice" />
         <module name="Student-Details" />
-        <module name="Liquibase_practice" />
         <module name="Core-Java-Assignment" />
-        <module name="Emp-Dept-Details" />
         <module name="Emp-Details" />
         <module name="Core-Java-assignment" />
         <module name="IPL-Stats-Assignment" />
@@ -21,5 +20,9 @@
         <module name="Contact" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Emp-Dept-Details" target="17" />
+      <module name="Liquibase_practice" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

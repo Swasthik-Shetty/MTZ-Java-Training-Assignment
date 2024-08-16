@@ -16,12 +16,13 @@
         <module>IPL-Stats-Assignment</module>
         <module>Student-Details</module>
         <module>Emp-Details</module>
-        <module>Emp-Dept-Details</module>
+
         <module>IPL-Stats-JDBC</module>
         <module>Contact</module>
         <module>PDF-Generation</module>
-        <module>Liquibase_practice</module>
+
         <module>Menu-PDFGeneration-Assignment</module>
+        <module>JUnit5-Practice</module>
     </modules>
     <description>Project with all the modules</description>
 
