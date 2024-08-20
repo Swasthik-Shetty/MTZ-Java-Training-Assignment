@@ -8,21 +8,29 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="IPL-Stats-JDBC" />
-        <module name="Menu-PDFGeneration-Assignment" />
         <module name="QuizAssignment" />
         <module name="JUnit5-Practice" />
         <module name="Student-Details" />
-        <module name="Core-Java-Assignment" />
-        <module name="Emp-Details" />
         <module name="Core-Java-assignment" />
         <module name="IPL-Stats-Assignment" />
-        <module name="PDF-Generation" />
         <module name="Contact" />
+        <module name="learning-spring-core" />
+        <module name="Menu-PDFGeneration-Assignment" />
+        <module name="cbook-server-app" />
+        <module name="Core-Java-Assignment" />
+        <module name="Emp-Details" />
+        <module name="PDF-Generation" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Emp-Dept-Details" target="17" />
       <module name="Liquibase_practice" target="17" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cbook-server-app" options="-parameters" />
+      <module name="learning-spring-core" options="-parameters" />
+    </option>
   </component>
 </project>

@@ -16,6 +16,8 @@
         <module>IPL-Stats-Assignment</module>
         <module>Student-Details</module>
         <module>Emp-Details</module>
+        <module>learning-spring-core</module>
+        <module>cbook-server-app</module>
 
         <module>IPL-Stats-JDBC</module>
         <module>Contact</module>
