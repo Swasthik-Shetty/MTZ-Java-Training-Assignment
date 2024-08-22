@@ -18,6 +18,7 @@
         <module name="Menu-PDFGeneration-Assignment" />
         <module name="cbook-server-app" />
         <module name="Core-Java-Assignment" />
+        <module name="jpa-learning" />
         <module name="Emp-Details" />
         <module name="PDF-Generation" />
       </profile>
@@ -30,6 +31,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="cbook-server-app" options="-parameters" />
+      <module name="jpa-learning" options="-parameters" />
       <module name="learning-spring-core" options="-parameters" />
     </option>
   </component>

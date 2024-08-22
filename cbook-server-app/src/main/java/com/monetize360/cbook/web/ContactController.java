@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,43 +19,75 @@ public class ContactController {
     private ContactService contactService;
 
     @PostMapping("/add")
-    public ResponseEntity<ContactDto> addContact(@RequestBody ContactDto contactDto){
-        ContactDto createdContact = contactService.addContact(contactDto);
-        return ResponseEntity.ok(createdContact);
+    public ResponseEntity<?> addContact(@RequestBody ContactDto contactDto){
+        try {
+            ContactDto createdContact = contactService.addContact(contactDto);
+            return new ResponseEntity<>(createdContact,HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Failed to create contact ", HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ContactDto> updateContact(@RequestBody ContactDto contactDto){
-        ContactDto updatedContact = contactService.updateContact(contactDto);
-        return ResponseEntity.ok(updatedContact);
+    public ResponseEntity<?> updateContact(@RequestBody ContactDto contactDto){
+        try {
+            ContactDto updatedContact = contactService.updateContact(contactDto);
+            return new ResponseEntity<>(updatedContact,HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("Failed to update", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ContactDto> getContact(@PathVariable("id")UUID id){
-        ContactDto contact = contactService.getContactById(id);
-        return ResponseEntity.ok(contact);
+    @ExceptionHandler()
+    public ResponseEntity<?> getContact(@PathVariable("id")UUID id){
+
+        try {
+            ContactDto contact = contactService.getContactById(id);
+
+            return new ResponseEntity<>(contact,HttpStatus.FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve contact ", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable("id")UUID id){
-        contactService.deleteContact(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteContact(@PathVariable("id")UUID id){
+        try {
+            contactService.deleteContact(id);
+            return ResponseEntity.noContent().build();
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("Failed to retrieve contact ", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/all/{field}")
-    public ResponseEntity<List<ContactDto>> getAllContacts(
+    public ResponseEntity<?> getAllContacts(
             @PathVariable String field,
             @RequestParam(value = "order", defaultValue = "asc", required = false)String order,
             @RequestParam(defaultValue = "0")int page,
             @RequestParam(defaultValue = "10")int size){
-        List<ContactDto> contacts = contactService.getAllContacts(field,order,page,size);
-        return ResponseEntity.ok(contacts);
+        try {
+            List<ContactDto> contacts = contactService.getAllContacts(field, order, page, size);
+            return ResponseEntity.ok(contacts);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>("Failed to retrieve contact ", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ContactDto>> searchContacts(@RequestParam("search")String search){
-        List<ContactDto> contacts = contactService.searchContacts(search);
-        return ResponseEntity.ok(contacts);
+    public ResponseEntity<?> searchContacts(@RequestParam("search")String search){
+        try {
+            List<ContactDto> contacts = contactService.searchContacts(search);
+            return ResponseEntity.ok(contacts);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>("Failed to retrieve contact ", HttpStatus.NOT_FOUND);
+        }
     }
 
 
