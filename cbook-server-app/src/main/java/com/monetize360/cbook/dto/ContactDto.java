@@ -11,8 +11,8 @@ import java.util.UUID;
 @Getter
 public class ContactDto {
     private UUID id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String mobile;
     private boolean deleted;
