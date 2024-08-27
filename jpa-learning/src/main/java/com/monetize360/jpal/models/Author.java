@@ -1,39 +1,48 @@
 package com.monetize360.jpal.models;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-//@Table(name = "AUTHOR_TBL")
-public class Author {
-    @Id
-    @GeneratedValue
-    private Integer id;
+@NamedQueries(
+        {
+          @NamedQuery(
+                  name = "Author.findByNamedQuery",
+                  query = "select a from Author a where a.age >= :age"
+          ),
+          @NamedQuery(
+                  name = "Author.updateByNamedQuery",
+                  query = "update Author a set a.age = :age"
+          )
+        }
+)
+public class Author extends BaseEntity {
 
-    @Column(name = "first_name")
-    private String firstName;
+  private String firstName;
 
-    @Column(name = "last_name")
-    private String lastName;
+  private String lastName;
 
-    @Column(name = "email",unique = true,nullable = false)
-    private String email;
+  @Column(
+      unique = true,
+      nullable = false
+  )
+  private String email;
 
-    @Column(name = "age")
-    private int age;
+  private int age;
 
-    @ManyToMany(mappedBy = "authors")
-    private List<Course> courses;
+  @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+  @JsonIgnore
+  private List<Course> courses;
 
 }

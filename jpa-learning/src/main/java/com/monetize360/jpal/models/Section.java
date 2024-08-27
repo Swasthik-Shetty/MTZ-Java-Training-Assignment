@@ -1,32 +1,32 @@
 package com.monetize360.jpal.models;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-public class Section {
+public class Section extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private Integer id;
+  private String name;
 
-    private String name;
+  private int sectionOrder;
 
-    private int orders;
+  @ManyToOne
+  @JoinColumn(name = "course_id")
+  private Course course;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
-
-    @OneToMany(mappedBy = "section")
-    private List<Lecture> lectures;
+  @OneToMany(mappedBy = "section")
+  private List<Lecture> lectures;
 }

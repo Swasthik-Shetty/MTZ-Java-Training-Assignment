@@ -82,19 +82,9 @@ public class ContactController {
     }
 
     @GetMapping(value = "/QRCode/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<BufferedImage> barbecueEAN13Barcode(@PathVariable("id") UUID id)
-            throws Exception {
-        ContactDto contact = contactService.getContactById(id);
-        String data = "UUID:" + id +
-                      "\nFirst Name: " + contact.getFirstName() +
-                      "\nLast Name: " + contact.getLastName() +
-                      "\nEmail: " + contact.getEmail() +
-                      "\nMobile: " + contact.getMobile();
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix =
-                barcodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
-
-        return new ResponseEntity<>(MatrixToImageWriter.toBufferedImage(bitMatrix),HttpStatus.OK);
+    public ResponseEntity<BufferedImage> barbecueEAN13Barcode(@PathVariable("id") UUID id) throws Exception {
+        BufferedImage qrCode = contactService.generateQRCode(id);
+        return new ResponseEntity<>(qrCode, HttpStatus.OK);
     }
 
 

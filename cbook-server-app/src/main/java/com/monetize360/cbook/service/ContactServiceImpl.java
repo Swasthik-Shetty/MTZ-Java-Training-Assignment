@@ -3,6 +3,10 @@ package com.monetize360.cbook.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.monetize360.cbook.dao.ContactRepository;
 import com.monetize360.cbook.domain.Contact;
 import com.monetize360.cbook.dto.ContactDto;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -75,6 +80,27 @@ public class ContactServiceImpl implements ContactService{
         return contactRepository.findById(uuid)
                 .map(contact -> objectMapper.convertValue(contact, ContactDto.class))
                 .orElse(null);
+    }
+
+    @Override
+    public BufferedImage generateQRCode(UUID id) throws Exception {
+        ContactDto contact = getContactById(id);
+        if (contact == null) {
+            throw new EntityNotFoundException("Contact not found with ID: " + id);
+        }
+
+        String data = "UUID:" + id +
+                "\nFirst Name: " + contact.getFirstName() +
+                "\nLast Name: " + contact.getLastName() +
+                "\nEmail: " + contact.getEmail() +
+                "\nMobile: " + contact.getMobile();
+
+        QRCodeWriter barcodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = barcodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+
+        log.info("Generated QR code for contact with ID: {}", id);
+
+        return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
 
     @Override
