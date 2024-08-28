@@ -7,6 +7,6 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 http://www.liquibase.org/xml/ns/dbchangelog
 https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="/db/changelog/changesets/changelog_v1.sql"/>
-    <include file="/db/changelog/changesets/changelog_v2.sql"/>
+    <include file="/db/changelog/changelog_set1.sql"/>
+
 </databaseChangeLog>

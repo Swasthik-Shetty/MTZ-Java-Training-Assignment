@@ -30,4 +30,7 @@ public class Contact {
 
     @Column(name = "deleted")
     private boolean deleted;
+
+    @Column(name = "description")
+    private String description;
 }

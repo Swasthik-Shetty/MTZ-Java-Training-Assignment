@@ -1,3 +1,21 @@
+--liquibase formatted sql
+
+--precondition-name precondition-attribute:value
+
+--changeset Swasthik:1 tag:version1
+
+create table if not exists contacts (
+    id UUID primary key,
+    first_name varchar(255),
+    last_name varchar(255),
+    email varchar(255),
+    mobile varchar(10),
+    deleted boolean default false
+);
+
+
+--changeset Swasthik:2 tag:version2
+
 INSERT INTO contacts (id, first_name, last_name, email, mobile)
 VALUES
     (UUID_GENERATE_V4(), 'John', 'Doe', 'johndoe@example.com', '9876543210'),
