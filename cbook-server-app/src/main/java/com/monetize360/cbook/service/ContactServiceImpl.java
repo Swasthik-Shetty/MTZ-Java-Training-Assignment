@@ -26,7 +26,6 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-
 public class ContactServiceImpl implements ContactService{
 
     @Autowired

@@ -1,4 +1,4 @@
-package com.monetize360.cbook.util;
+package com.monetize360.contactapp.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -10,7 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import java.awt.image.BufferedImage;
 
 @Configuration
-public class AppConfiguration {
+public class AppConfig {
 
     @Bean
     public ObjectMapper objectMapper() {

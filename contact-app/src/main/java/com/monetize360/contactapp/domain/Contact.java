@@ -1,7 +1,10 @@
-package com.monetize360.cbook.domain;
+package com.monetize360.contactapp.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -10,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "contacts")
+@Table(name = "contact_table")
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,5 +33,9 @@ public class Contact {
 
     @Column(name = "deleted")
     private boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

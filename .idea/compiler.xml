@@ -10,6 +10,7 @@
         <module name="IPL-Stats-JDBC" />
         <module name="QuizAssignment" />
         <module name="JUnit5-Practice" />
+        <module name="contact-app" />
         <module name="Student-Details" />
         <module name="Core-Java-assignment" />
         <module name="IPL-Stats-Assignment" />
@@ -31,6 +32,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="cbook-server-app" options="-parameters" />
+      <module name="contact-app" options="-parameters" />
       <module name="jpa-learning" options="-parameters" />
       <module name="learning-spring-core" options="-parameters" />
     </option>
