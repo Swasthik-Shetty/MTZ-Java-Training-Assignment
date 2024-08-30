@@ -1,5 +1,6 @@
 package com.monetize360.contactapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.UUID;
@@ -9,6 +10,7 @@ import java.util.UUID;
 @Builder
 @Setter
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ContactDto {
     private UUID id;
     private String firstName;
