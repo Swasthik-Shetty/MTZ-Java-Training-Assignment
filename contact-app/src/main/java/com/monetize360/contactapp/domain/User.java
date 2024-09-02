@@ -29,12 +29,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "mobile")
-    private String mobile;
-
-    @Column(name = "deleted")
-    private boolean deleted;
-
     @OneToMany(mappedBy = "user")
     private List<Contact> contacts;
 }

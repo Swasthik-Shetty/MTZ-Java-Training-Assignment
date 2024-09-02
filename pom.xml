@@ -20,7 +20,7 @@
         <module>cbook-server-app</module>
         <module>contact-app</module>
         <module>jpa-learning</module>
-
+        <module>jwt-practice</module>
         <module>IPL-Stats-JDBC</module>
         <module>Contact</module>
         <module>PDF-Generation</module>

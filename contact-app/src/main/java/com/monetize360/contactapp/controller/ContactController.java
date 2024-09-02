@@ -5,6 +5,7 @@ import com.monetize360.contactapp.dto.ContactDto;
 
 import com.monetize360.contactapp.service.ContactService;
 
+import com.monetize360.contactapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +23,9 @@ import java.util.UUID;
 public class ContactController {
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/add")
     public ResponseEntity<ContactDto> addContact(@RequestBody ContactDto contactDto){

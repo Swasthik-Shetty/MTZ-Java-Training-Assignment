@@ -18,7 +18,5 @@ CREATE TABLE if not exists user_table (
     id UUID PRIMARY KEY,
     user_name VARCHAR(255),
     password VARCHAR(255),
-    email VARCHAR(255),
-    mobile VARCHAR(20),
-    deleted BOOLEAN DEFAULT FALSE
+    email VARCHAR(255)
 );

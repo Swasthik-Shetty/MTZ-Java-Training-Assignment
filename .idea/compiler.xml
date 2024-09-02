@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="IPL-Stats-JDBC" />
         <module name="QuizAssignment" />
+        <module name="jwt-practice" />
         <module name="JUnit5-Practice" />
         <module name="contact-app" />
         <module name="Student-Details" />
@@ -34,6 +35,7 @@
       <module name="cbook-server-app" options="-parameters" />
       <module name="contact-app" options="-parameters" />
       <module name="jpa-learning" options="-parameters" />
+      <module name="jwt-practice" options="-parameters" />
       <module name="learning-spring-core" options="-parameters" />
     </option>
   </component>
